@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="أزياء عزيزة طوبال - أزياء جزائرية راقية، كاراكو، قفطان وبدرون">
+    <title>AzizaToubal Haute Couture | الأصالة الجزائرية</title>
+    <!-- CSS Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --gold-light: #e2c285;
+            --dark-gold: #8e6d2f;
+            --cream: #fbf9f6;
+            --rich-black: #1a1a1a;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--cream);
+            color: var(--rich-black);
+            overflow-x: hidden;
+        }
+        .luxury-font { font-family: 'Playfair Display', serif; }
+        .arabic-luxury { font-family: 'Amiri', serif; }
+        
+        .hero-pattern {
+            background-image: url("https://www.transparenttextures.com/patterns/arabesque.png");
+            background-attachment: fixed;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--dark-gold), var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--dark-gold), var(--gold));
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(142, 109, 47, 0.2);
+        }
+
+        .dress-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 40px;
+            padding: 3rem;
+        }
+
+        .input-luxury {
+            border: 1px solid #e5e7eb;
+            padding: 1.2rem;
+            border-radius: 15px;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+            background: #fdfdfd;
+        }
+        .input-luxury:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+        }
+
+        .chip {
+            cursor: pointer;
+            border: 1px solid #eee;
+            padding: 0.7rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        .chip.active {
+            background: var(--gold);
+            color: white;
+            border-color: var(--gold);
+            box-shadow: 0 4px 10px rgba(197, 160, 89, 0.3);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+    </style>
+</head>
+<body class="hero-pattern">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-[1000] border-b border-gold/10 py-6 md:py-10">
+        <div class="container mx-auto px-4 flex flex-col items-center">
+            <h1 class="arabic-luxury text-6xl md:text-8xl font-bold gold-gradient mb-2">AzizaToubal</h1>
+            <p class="luxury-font text-xs md:text-sm tracking-[0.6em] text-gray-500 uppercase">Haute Couture Algérienne</p>
+            
+            <div class="mt-8 flex gap-8 items-center">
+                <a href="#" id="head-ig" target="_blank" class="text-xs font-bold hover:text-gold transition-colors tracking-widest">INSTAGRAM</a>
+                <span class="text-gold opacity-30">/</span>
+                <a href="#" id="head-wa" target="_blank" class="text-xs font-bold hover:text-gold transition-colors tracking-widest">WHATSAPP</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-20">
+        <!-- Hero Section -->
+        <div class="text-center max-w-4xl mx-auto mb-24">
+            <span class="text-gold text-3xl mb-6 block italic">✦</span>
+            <h2 class="text-4xl md:text-6xl font-light mb-8 leading-tight">حيث يمتزج <span class="font-bold italic">التراث</span> الجزائري بفخامة <span class="font-bold italic">العصر</span></h2>
+            <div class="h-0.5 w-32 bg-gold mx-auto mb-16 opacity-50"></div>
+            
+            <!-- Category Selector -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="setCategory('all')" id="btn-all" class="chip active">كافة الموديلات</button>
+                <button onclick="setCategory('luxury')" id="btn-luxury" class="chip">المجموعة الملكية</button>
+                <button onclick="setCategory('mid')" id="btn-mid" class="chip">تشكيلة كلاسيك</button>
+            </div>
+        </div>
+
+        <!-- Store Management Button -->
+        <div class="flex justify-end mb-10">
+            <button onclick="openAdmin()" class="flex items-center gap-3 text-sm font-bold text-gold/60 hover:text-gold transition">
+                <span>تعديل المتجر</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </button>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+            <!-- Dynamic products will appear here -->
+        </div>
+    </main>
+
+    <!-- Order Modal -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <div class="text-center mb-10">
+                <h3 class="arabic-luxury text-4xl font-bold text-gold mb-3">تفاصيل الحجز</h3>
+                <p class="text-gray-400 text-sm">أدخلي بياناتكِ لنقوم بتجهيز طلبكِ الخاص</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="order-name" class="input-luxury" placeholder="الاسم واللقب">
+                    <input type="tel" id="order-phone" class="input-luxury" placeholder="رقم الهاتف">
+                </div>
+                
+                <select id="order-wilaya" class="input-luxury">
+                    <option value="">اختر الولاية</option>
+                    <!-- Algerian Wilayas (1 to 58) -->
+                    <option value="01-أدرار">01 - أدرار</option><option value="02-الشلف">02 - الشلف</option><option value="03-الأغواط">03 - الأغواط</option><option value="04-أم البواقي">04 - أم البواقي</option><option value="05-باتنة">05 - باتنة</option><option value="06-بجاية">06 - بجاية</option><option value="07-بسكرة">07 - بسكرة</option><option value="08-بشار">08 - بشار</option><option value="09-البليدة">09 - البليدة</option><option value="10-البويرة">10 - البويرة</option><option value="11-تمنراست">11 - تمنراست</option><option value="12-تبسة">12 - تبسة</option><option value="13-تلمسان">13 - تلمسان</option><option value="14-تيارت">14 - تيارت</option><option value="15-تيزي وزو">15 - تيزي وزو</option><option value="16-الجزائر العاصمة">16 - الجزائر العاصمة</option><option value="17-الجلفة">17 - الجلفة</option><option value="18-جيجل">18 - جيجل</option><option value="19-سطيف">19 - سطيف</option><option value="20-سعيدة">20 - سعيدة</option><option value="21-سكيكدة">21 - سكيكدة</option><option value="22-سيدي بلعباس">22 - سيدي بلعباس</option><option value="23-عنابة">23 - عنابة</option><option value="24-قالمة">24 - قالمة</option><option value="25-قسنطينة">25 - قسنطينة</option><option value="26-المدية">26 - المدية</option><option value="27-مستغانم">27 - مستغانم</option><option value="28-المسيلة">28 - المسيلة</option><option value="29-معسكر">29 - معسكر</option><option value="30-ورقلة">30 - ورقلة</option><option value="31-وهران">31 - وهران</option><option value="32-البيض">32 - البيض</option><option value="33-إليزي">33 - إليزي</option><option value="34-برج بوعريريج">34 - برج بوعريريج</option><option value="35-بومرداس">35 - بومرداس</option><option value="36-الطارف">36 - الطارف</option><option value="37-تندوف">37 - تندوف</option><option value="38-تيسمسيلت">38 - تيسمسيلت</option><option value="39-الوادي">39 - الوادي</option><option value="40-خنشلة">40 - خنشلة</option><option value="41-سوق أهراس">41 - سوق أهراس</option><option value="42-تيبازة">42 - تيبازة</option><option value="43-ميلة">43 - ميلة</option><option value="44-عين الدفلى">44 - عين الدفلى</option><option value="45-النعامة">45 - النعامة</option><option value="46-عين تموشنت">46 - عين تموشنت</option><option value="47-غرداية">47 - غرداية</option><option value="48-غليزان">48 - غليزان</option><option value="49-تيميمون">49 - تيميمون</option><option value="50-برج باجي مختار">50 - برج باجي مختار</option><option value="51-أولاد جلال">51 - أولاد جلال</option><option value="52-بني عباس">52 - بني عباس</option><option value="53-عين صالح">53 - عين صالح</option><option value="54-عين قزام">54 - عين قزام</option><option value="55-تقرت">55 - تقرت</option><option value="56-جانت">56 - جانت</option><option value="57-المغير">57 - المغير</option><option value="58-المنيعة">58 - المنيعة</option>
+                </select>
+
+                <div class="bg-gray-50 p-8 rounded-3xl mb-8">
+                    <p class="text-xs font-bold mb-4 uppercase text-gray-400 tracking-widest">اختيار المقاس</p>
+                    <div id="size-options" class="flex flex-wrap gap-2 mb-8"></div>
+                    
+                    <p class="text-xs font-bold mb-4 uppercase text-gray-400 tracking-widest">الألوان المتاحة</p>
+                    <div id="color-options" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <button onclick="confirmAndSend()" class="w-full btn-gold text-white py-6 rounded-2xl font-bold text-xl shadow-2xl tracking-widest uppercase">
+                    تأكيد الطلب عبر واتساب
+                </button>
+                <button onclick="closeModals()" class="w-full text-gray-400 mt-4 text-sm font-medium">العودة للمتجر</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="text-3xl font-bold italic">لوحة الإدارة</h3>
+                <button onclick="closeModals()" class="text-gray-300 hover:text-black">✕</button>
+            </div>
+            
+            <div class="space-y-10">
+                <div class="bg-amber-50 p-6 rounded-2xl">
+                    <p class="text-xs font-bold text-gold mb-3 uppercase tracking-wider">روابط التواصل</p>
+                    <input type="text" id="admin-phone" class="input-luxury" placeholder="رقم واتساب (مثل 213550000000)">
+                    <input type="text" id="admin-ig" class="input-luxury" placeholder="رابط انستغرام">
+                </div>
+
+                <div class="border-2 border-dashed border-gray-200 p-8 rounded-3xl bg-white">
+                    <h4 class="font-bold mb-6 text-gray-800">إضافة فستان جديد</h4>
+                    <input type="text" id="new-name" class="input-luxury" placeholder="اسم الموديل">
+                    <input type="text" id="new-price" class="input-luxury" placeholder="السعر (مثلاً: 120,000 دج)">
+                    <input type="text" id="new-img" class="input-luxury" placeholder="رابط صورة الفستان">
+                    <input type="text" id="new-colors" class="input-luxury" placeholder="الألوان (أبيض، ذهبي، أحمر...)">
+                    <select id="new-cat" class="input-luxury">
+                        <option value="luxury">فئة المجموعات الملكية</option>
+                        <option value="mid">فئة كلاسيك</option>
+                    </select>
+                    <button onclick="addNewProduct()" class="w-full bg-black text-white py-4 rounded-2xl font-bold shadow-lg">حفظ الموديل</button>
+                </div>
+
+                <div id="edit-list" class="space-y-4">
+                    <!-- Products will be listed here for deletion -->
+                </div>
+            </div>
+            
+            <button onclick="saveAdminAndClose()" class="w-full mt-10 btn-gold text-white py-5 rounded-2xl font-bold shadow-2xl">حفظ كافة التغييرات</button>
+        </div>
+    </div>
+
+    <footer class="py-32 bg-white text-center border-t border-gold/10">
+        <h2 class="arabic-luxury text-5xl gold-gradient mb-4">AzizaToubal</h2>
+        <p class="text-gray-400 text-sm tracking-widest italic uppercase">Haute Couture Algérienne</p>
+        <div class="mt-12 opacity-30 text-[9px] tracking-[1.5em] font-bold">MANUFACTURED IN ALGERIA</div>
+    </footer>
+
+    <script>
+        // Data Store (Normally this would be on a server)
+        let config = {
+            phone: "213550000000", // رقم هاتفك الافتراضي
+            instagram: "https://instagram.com/azizatoubal",
+            products: [
+                { id: 1, name: "كاراكو عاصمي 'جوهرة'", price: "125,000 دج", img: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=1000", cat: "luxury", colors: ["ذهبي", "أبيض ملكي"] },
+                { id: 2, name: "قفطان 'نسيم البحر'", price: "85,000 دج", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=1000", cat: "mid", colors: ["فيروزي", "فضي"] },
+                { id: 3, name: "بدرون عصري لؤلؤي", price: "55,000 دج", img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&q=80&w=1000", cat: "mid", colors: ["كريمي", "وردي"] }
+            ],
+            sizes: ["36", "38", "40", "42", "44", "46", "48"]
+        };
+
+        let currentCategory = 'all';
+        let currentOrder = null;
+        let selectedSize = '';
+        let selectedColor = '';
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.getElementById(`btn-${cat}`).classList.add('active');
+            renderProducts();
+        }
+
+        function renderProducts() {
+            document.getElementById('head-ig').href = config.instagram;
+            document.getElementById('head-wa').href = `https://wa.me/${config.phone}`;
+
+            const filtered = currentCategory === 'all' ? config.products : config.products.filter(p => p.cat === currentCategory);
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="dress-card bg-white rounded-[3rem] shadow-sm overflow-hidden flex flex-col h-full border border-gold/5 hover:shadow-2xl hover:shadow-gold/10 transition-all duration-500">
+                        <div class="h-[550px] overflow-hidden relative group">
+                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                            <div class="absolute top-6 right-6 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase text-gold">
+                                ${p.cat === 'luxury' ? 'Premium Selection' : 'Classic Collection'}
+                            </div>
+                        </div>
+                        <div class="p-12 text-center flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-3xl font-bold mb-3 tracking-tight">${p.name}</h3>
+                                <p class="text-gold font-bold text-2xl mb-10 italic">${p.price}</p>
+                            </div>
+                            <button onclick="openOrder(${p.id})" class="btn-gold text-white w-full py-5 rounded-2xl font-bold shadow-xl text-lg">
+                                حجز هذه القطعة
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openOrder(id) {
+            currentOrder = config.products.find(p => p.id === id);
+            selectedSize = '';
+            selectedColor = '';
+            document.getElementById('order-modal').style.display = 'block';
+            
+            const sDiv = document.getElementById('size-options');
+            sDiv.innerHTML = config.sizes.map(s => `<div class="chip size-item" onclick="selectItem(this, 'size', '${s}')">${s}</div>`).join('');
+            
+            const cDiv = document.getElementById('color-options');
+            cDiv.innerHTML = currentOrder.colors.map(c => `<div class="chip color-item" onclick="selectItem(this, 'color', '${c}')">${c}</div>`).join('');
+        }
+
+        function selectItem(el, type, val) {
+            document.querySelectorAll(`.${type}-item`).forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+            if(type === 'size') selectedSize = val;
+            else selectedColor = val;
+        }
+
+        function confirmAndSend() {
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const wilaya = document.getElementById('order-wilaya').value;
+
+            if(!name || !phone || !wilaya || !selectedSize || !selectedColor) {
+                alert("لطفاً، أكملي كافة بيانات الحجز المطلوبة");
+                return;
+            }
+
+            const msg = `👑 طلب حجز جديد - AzizaToubal\n\n` +
+                        `👤 اسم الزبون: ${name}\n` +
+                        `📞 رقم الهاتف: ${phone}\n` +
+                        `📍 الولاية: ${wilaya}\n` +
+                        `--------------------------\n` +
+                        `👗 الموديل: ${currentOrder.name}\n` +
+                        `📏 المقاس: ${selectedSize}\n` +
+                        `🎨 اللون: ${selectedColor}\n` +
+                        `💰 السعر المعروض: ${currentOrder.price}`;
+
+            window.open(`https://wa.me/${config.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            closeModals();
+        }
+
+        function openAdmin() {
+            document.getElementById('admin-phone').value = config.phone;
+            document.getElementById('admin-ig').value = config.instagram;
+            const list = document.getElementById('edit-list');
+            list.innerHTML = config.products.map((p, i) => `
+                <div class="p-5 border rounded-2xl bg-gray-50 flex justify-between items-center group">
+                    <div>
+                        <p class="text-sm font-bold text-gray-800">${p.name}</p>
+                        <p class="text-xs text-gold">${p.price}</p>
+                    </div>
+                    <button onclick="deleteProduct(${i})" class="text-red-400 hover:text-red-600 font-bold text-xs uppercase tracking-tighter transition">حذف</button>
+                </div>
+            `).join('');
+            document.getElementById('admin-modal').style.display = 'block';
+        }
+
+        function addNewProduct() {
+            const name = document.getElementById('new-name').value;
+            const price = document.getElementById('new-price').value;
+            const img = document.getElementById('new-img').value;
+            const colors = document.getElementById('new-colors').value.split('،').map(c => c.trim()).filter(c => c !== "");
+            const cat = document.getElementById('new-cat').value;
+
+            if(name && price && img && colors.length > 0) {
+                config.products.unshift({ id: Date.now(), name, price, img, cat, colors });
+                renderProducts();
+                document.getElementById('new-name').value = '';
+                document.getElementById('new-price').value = '';
+                document.getElementById('new-img').value = '';
+                document.getElementById('new-colors').value = '';
+                alert("تمت إضافة الموديل بنجاح");
+            } else {
+                alert("يرجى ملء جميع الخانات بما فيها الألوان");
+            }
+        }
+
+        function deleteProduct(i) {
+            if(confirm("هل تودين حذف هذا الموديل نهائياً؟")) {
+                config.products.splice(i, 1);
+                openAdmin();
+            }
+        }
+
+        function saveAdminAndClose() {
+            config.phone = document.getElementById('admin-phone').value;
+            config.instagram = document.getElementById('admin-ig').value;
+            renderProducts();
+            closeModals();
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        }
+
+        // Initial Load
+        window.onload = renderProducts;
+    </script>
+</body>
+</html>
+
